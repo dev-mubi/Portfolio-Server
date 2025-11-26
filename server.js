@@ -32,8 +32,24 @@ app.use('/api/achievements', achievementsRoutes);
 app.use('/api/admin/achievements', achievementsRoutes);
 
 // Health check
-app.get('/api/health', (req, res) => {
-  res.json({ success: true, message: 'Server is running' });
+app.get('/api/health', async (req, res) => {
+  try {
+    const { sequelize } = require('./config/database');
+    await sequelize.authenticate();
+    res.json({ 
+      success: true, 
+      status: 'online',
+      database: 'connected',
+      timestamp: new Date().toISOString()
+    });
+  } catch (error) {
+    res.status(500).json({ 
+      success: false, 
+      status: 'online',
+      database: 'disconnected',
+      error: error.message 
+    });
+  }
 });
 
 // Error handling middleware

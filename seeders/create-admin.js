@@ -1,5 +1,5 @@
 const { Admin } = require('../models');
-const { testConnection } = require('../config/database');
+const { testConnection, syncDatabase } = require('../config/database');
 require('dotenv').config();
 
 const createAdmin = async () => {
@@ -7,6 +7,7 @@ const createAdmin = async () => {
     console.log('🔄 Creating admin user...\n');
 
     await testConnection();
+    await syncDatabase();
 
     // Check if admin exists
     const existingAdmin = await Admin.findOne({ 
@@ -31,10 +32,10 @@ const createAdmin = async () => {
       console.log(`   Email: ${admin.email}`);
     }
 
-    console.log('\n📝 Login Credentials:');
-    console.log(`   Email: ${process.env.ADMIN_EMAIL || 'admin@portfolio.com'}`);
-    console.log(`   Password: ${process.env.ADMIN_PASSWORD || 'admin123'}`);
-    console.log('\n⚠️  Please change the password after first login!\n');
+    // console.log('\n📝 Login Credentials:');
+    // console.log(`   Email: ${process.env.ADMIN_EMAIL || 'admin@portfolio.com'}`);
+    // console.log(`   Password: ${process.env.ADMIN_PASSWORD || 'admin123'}`);
+    // console.log('\n⚠️  Please change the password after first login!\n');
 
     process.exit(0);
   } catch (error) {
