@@ -20,6 +20,7 @@ const PORT = process.env.PORT || 5000;
 
 // Security Middleware
 app.use(helmet());
+app.set('trust proxy', 1); // Required for express-rate-limit behind Railway reverse proxy
 
 const apiLimiter = rateLimit({
   windowMs: 15 * 60 * 1000, // 15 minutes
