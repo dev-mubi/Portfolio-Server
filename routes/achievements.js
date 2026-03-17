@@ -9,7 +9,7 @@ const authMiddleware = require('../middleware/auth');
 router.get('/', async (req, res) => {
   try {
     const achievements = await Achievement.findAll({
-      order: [['createdAt', 'DESC']]
+      order: [['sort_order', 'ASC']]
     });
 
     res.json({

@@ -1,23 +1,23 @@
 const express = require('express');
 const router = express.Router();
-const { Service } = require('../models');
+const { Timeline } = require('../models');
 const authMiddleware = require('../middleware/auth');
 
-// @route   GET /api/services
-// @desc    Get all services
+// @route   GET /api/timeline
+// @desc    Get all timeline entries ordered by sort_order
 // @access  Public
 router.get('/', async (req, res) => {
   try {
-    const services = await Service.findAll({
+    const timeline = await Timeline.findAll({
       order: [['sort_order', 'ASC']]
     });
 
     res.json({
       success: true,
-      data: services
+      data: timeline
     });
   } catch (error) {
-    console.error('Get services error:', error);
+    console.error('Get timeline error:', error);
     res.status(500).json({
       success: false,
       message: 'Server error'
@@ -25,20 +25,20 @@ router.get('/', async (req, res) => {
   }
 });
 
-// @route   POST /api/admin/services
-// @desc    Create new service
-// @access  Private (Admin only)
+// @route   POST /api/admin/timeline
+// @desc    Create new timeline entry
+// @access  Private
 router.post('/', authMiddleware, async (req, res) => {
   try {
-    const service = await Service.create(req.body);
+    const entry = await Timeline.create(req.body);
 
     res.status(201).json({
       success: true,
-      message: 'Service created successfully',
-      data: service
+      message: 'Timeline entry created successfully',
+      data: entry
     });
   } catch (error) {
-    console.error('Create service error:', error);
+    console.error('Create timeline error:', error);
     res.status(500).json({
       success: false,
       message: 'Server error'
@@ -46,29 +46,29 @@ router.post('/', authMiddleware, async (req, res) => {
   }
 });
 
-// @route   PUT /api/admin/services/:id
-// @desc    Update service
-// @access  Private (Admin only)
+// @route   PUT /api/admin/timeline/:id
+// @desc    Update timeline entry
+// @access  Private
 router.put('/:id', authMiddleware, async (req, res) => {
   try {
-    const service = await Service.findByPk(req.params.id);
+    const entry = await Timeline.findByPk(req.params.id);
 
-    if (!service) {
+    if (!entry) {
       return res.status(404).json({
         success: false,
-        message: 'Service not found'
+        message: 'Timeline entry not found'
       });
     }
 
-    await service.update(req.body);
+    await entry.update(req.body);
 
     res.json({
       success: true,
-      message: 'Service updated successfully',
-      data: service
+      message: 'Timeline entry updated successfully',
+      data: entry
     });
   } catch (error) {
-    console.error('Update service error:', error);
+    console.error('Update timeline error:', error);
     res.status(500).json({
       success: false,
       message: 'Server error'
@@ -76,28 +76,28 @@ router.put('/:id', authMiddleware, async (req, res) => {
   }
 });
 
-// @route   DELETE /api/admin/services/:id
-// @desc    Delete service
-// @access  Private (Admin only)
+// @route   DELETE /api/admin/timeline/:id
+// @desc    Delete timeline entry
+// @access  Private
 router.delete('/:id', authMiddleware, async (req, res) => {
   try {
-    const service = await Service.findByPk(req.params.id);
+    const entry = await Timeline.findByPk(req.params.id);
 
-    if (!service) {
+    if (!entry) {
       return res.status(404).json({
         success: false,
-        message: 'Service not found'
+        message: 'Timeline entry not found'
       });
     }
 
-    await service.destroy();
+    await entry.destroy();
 
     res.json({
       success: true,
-      message: 'Service deleted successfully'
+      message: 'Timeline entry deleted successfully'
     });
   } catch (error) {
-    console.error('Delete service error:', error);
+    console.error('Delete timeline error:', error);
     res.status(500).json({
       success: false,
       message: 'Server error'

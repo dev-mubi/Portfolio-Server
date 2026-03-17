@@ -8,20 +8,27 @@ const Skill = sequelize.define('Skill', {
     autoIncrement: true
   },
   name: {
-    type: DataTypes.STRING,
+    type: DataTypes.STRING(80),
     allowNull: false
   },
-  level: {
-    type: DataTypes.INTEGER,
+  category: {
+    type: DataTypes.STRING(30),
     allowNull: false,
     validate: {
-      min: 0,
-      max: 100
+      isIn: [['Frontend', 'Backend', 'Language', 'Database', 'Tools', 'Data Engineering']]
     }
   },
-  category: {
-    type: DataTypes.STRING(100),
-    allowNull: true
+  proficiency_tier: {
+    type: DataTypes.STRING(20),
+    allowNull: false,
+    defaultValue: 'proficient',
+    validate: {
+      isIn: [['proficient', 'familiar', 'learning']]
+    }
+  },
+  sort_order: {
+    type: DataTypes.INTEGER,
+    defaultValue: 0
   }
 }, {
   tableName: 'skills',

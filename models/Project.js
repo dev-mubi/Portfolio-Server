@@ -8,19 +8,26 @@ const Project = sequelize.define('Project', {
     autoIncrement: true
   },
   title: {
-    type: DataTypes.STRING,
+    type: DataTypes.STRING(120),
     allowNull: false
   },
   category: {
-    type: DataTypes.STRING,
+    type: DataTypes.STRING(20),
+    allowNull: false,
+    validate: {
+      isIn: [['web', 'data', 'systems']]
+    }
+  },
+  highlight: {
+    type: DataTypes.TEXT,
     allowNull: true
   },
   description: {
     type: DataTypes.TEXT,
-    allowNull: true
+    allowNull: false
   },
-  image: {
-    type: DataTypes.STRING(500),
+  image_url: {
+    type: DataTypes.TEXT,
     allowNull: true
   },
   technologies: {
@@ -31,15 +38,47 @@ const Project = sequelize.define('Project', {
     type: DataTypes.ARRAY(DataTypes.TEXT),
     defaultValue: []
   },
-  githubUrl: {
-    type: DataTypes.STRING(500),
-    allowNull: true,
-    field: 'github_url'
+  github_url: {
+    type: DataTypes.TEXT,
+    allowNull: true
   },
-  liveUrl: {
-    type: DataTypes.STRING(500),
-    allowNull: true,
-    field: 'live_url'
+  live_url: {
+    type: DataTypes.TEXT,
+    allowNull: true
+  },
+  featured: {
+    type: DataTypes.BOOLEAN,
+    allowNull: false,
+    defaultValue: false
+  },
+  is_public: {
+    type: DataTypes.BOOLEAN,
+    allowNull: false,
+    defaultValue: true
+  },
+  status: {
+    type: DataTypes.STRING(20),
+    allowNull: false,
+    defaultValue: 'live',
+    validate: {
+      isIn: [['live', 'in-progress', 'archived']]
+    }
+  },
+  complexity: {
+    type: DataTypes.STRING(20),
+    allowNull: false,
+    defaultValue: 'production',
+    validate: {
+      isIn: [['production', 'learning', 'experimental']]
+    }
+  },
+  phase: {
+    type: DataTypes.STRING(30),
+    allowNull: true
+  },
+  sort_order: {
+    type: DataTypes.INTEGER,
+    defaultValue: 0
   }
 }, {
   tableName: 'projects',

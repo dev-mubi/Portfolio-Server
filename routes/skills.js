@@ -9,7 +9,7 @@ const authMiddleware = require('../middleware/auth');
 router.get('/', async (req, res) => {
   try {
     const skills = await Skill.findAll({
-      order: [['category', 'ASC'], ['name', 'ASC']]
+      order: [['sort_order', 'ASC'], ['name', 'ASC']]
     });
 
     res.json({
